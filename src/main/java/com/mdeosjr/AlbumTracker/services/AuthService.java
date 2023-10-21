@@ -40,20 +40,22 @@ public class AuthService implements UserDetailsService {
     private UserRepository userRepository;
     @Autowired
     private TokenService tokenService;
-    private AuthenticationManager authenticationManager;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userRepository.findByEmail(email);
+        User user = (User) userRepository.findByEmail(email);
+        if (user == null) throw new UsernameNotFoundException("User not found!");
+
+        return user;
     }
 
     public String login(LoginDTO login) {
-        authenticationManager = context.getBean(AuthenticationManager.class);
+        AuthenticationManager authenticationManager = context.getBean(AuthenticationManager.class);
 
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(login.email(), login.password());
 
-        Authentication authenticate = this.authenticationManager.authenticate(authenticationToken);
+        Authentication authenticate = authenticationManager.authenticate(authenticationToken);
 
         var user = (User) authenticate.getPrincipal();
 
