@@ -18,7 +18,7 @@ public class UserServiceImpl implements UserService {
 
     public void createUser(User user) {
         var existentUser = userRepository.findByEmail(user.getEmail());
-        if (existentUser != null) throw new UserAlreadyExistsException("User already exists!");
+        if (existentUser != null) throw new UserAlreadyExistsException();
 
         String password = user.getPassword();
         user.setPassword(encoder.encode(password));

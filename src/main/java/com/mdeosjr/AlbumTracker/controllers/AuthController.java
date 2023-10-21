@@ -1,6 +1,7 @@
 package com.mdeosjr.AlbumTracker.controllers;
 
 import com.mdeosjr.AlbumTracker.domain.dtos.LoginDTO;
+import com.mdeosjr.AlbumTracker.domain.dtos.SpotifyLoginDTO;
 import com.mdeosjr.AlbumTracker.domain.models.User;
 import com.mdeosjr.AlbumTracker.services.AuthService;
 import com.mdeosjr.AlbumTracker.services.UserService;
@@ -31,6 +32,13 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody @Valid LoginDTO login) {
         var token = authService.login(login);
+
+        return new ResponseEntity<>(token, HttpStatus.OK);
+    }
+
+    @PostMapping("/oauth")
+    public ResponseEntity<String> spotifyLogin(@RequestBody @Valid SpotifyLoginDTO code) {
+        var token = authService.spotifyLogin(code);
 
         return new ResponseEntity<>(token, HttpStatus.OK);
     }

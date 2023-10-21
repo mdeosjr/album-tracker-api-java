@@ -9,6 +9,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -23,7 +24,20 @@ public class User implements Serializable, UserDetails {
     private String name;
     @Column(unique = true)
     private String email;
+    @Column(nullable = true)
     private String password;
+    @Column(nullable = true)
+    private String provider;
+    @ManyToMany(mappedBy = "users")
+    private Set<Album> albums;
+
+    public String getProvider() {
+        return provider;
+    }
+
+    public void setProvider(String provider) {
+        this.provider = provider;
+    }
 
     public UUID getUserId() {
         return userId;
@@ -51,6 +65,14 @@ public class User implements Serializable, UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Set<Album> getAlbums() {
+        return albums;
+    }
+
+    public void setAlbums(Set<Album> albums) {
+        this.albums = albums;
     }
 
     @Override
